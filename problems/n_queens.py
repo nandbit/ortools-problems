@@ -16,7 +16,6 @@ for i in range(N):
 model.add_all_different(queens)
 model.add_all_different(diagonals_pos)
 model.add_all_different(diagonals_neg)
-# model.add_all_different([queens[i] + i for i in range(N)])
 
 solver = cp_model.CpSolver()
 status = solver.solve(model)
