@@ -1,3 +1,6 @@
+# Given N queens, place them on an NxN chessboard
+# in a way such that no queen can capture another
+
 from ortools.sat.python import cp_model
 
 N = 8

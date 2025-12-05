@@ -1,3 +1,8 @@
+# Given N vertices, and M edges, assign a color to each vertex
+# such that no adjacent vertices have the same color.
+# Adjacent vertices are those that have an edge between them.
+# Use as few colors as possible.
+
 from ortools.sat.python import cp_model
 
 # 0 --- 1
