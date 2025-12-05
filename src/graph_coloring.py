@@ -5,6 +5,7 @@
 
 from ortools.sat.python import cp_model
 
+from utils import solution_status
 # 0 --- 1
 # |   / |
 # |  /  |
@@ -44,17 +45,7 @@ model.minimize(num_colors)
 solver = cp_model.CpSolver()
 
 status = solver.solve(model)
-
-if status == cp_model.OPTIMAL:
-    print("Optimal solution found")
-elif status == cp_model.FEASIBLE:
-    print("Feasible solution found")
-elif status == cp_model.INFEASIBLE:
-    print("No solution exists")
-elif status == cp_model.MODEL_INVALID:
-    print("Model is invalid")
-elif status == cp_model.UNKNOWN:
-    print("Unknown - solver stopped before finding a solution (e.g., timeout)")
+print(solution_status(status))
 
 print(f"Solved using {solver.value(num_colors)} colors")
 for i in range(len(colors)):

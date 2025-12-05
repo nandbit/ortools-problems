@@ -3,6 +3,8 @@
 
 from ortools.sat.python import cp_model
 
+from utils import solution_status
+
 N = 8
 
 model = cp_model.CpModel()
@@ -23,16 +25,7 @@ model.add_all_different(diagonals_neg)
 solver = cp_model.CpSolver()
 status = solver.solve(model)
 
-if status == cp_model.OPTIMAL:
-    print("Optimal solution found")
-elif status == cp_model.FEASIBLE:
-    print("Feasible solution found")
-elif status == cp_model.INFEASIBLE:
-    print("No solution exists")
-elif status == cp_model.MODEL_INVALID:
-    print("Model is invalid")
-elif status == cp_model.UNKNOWN:
-    print("Unknown - solver stopped before finding a solution (e.g., timeout)")
+print(solution_status(status))
 
 for i in range(N):
     print(solver.value(queens[i]))

@@ -2,6 +2,8 @@
 
 from ortools.sat.python import cp_model
 
+from utils import solution_status
+
 puzzle = [
     [5, 3, 0, 0, 7, 0, 0, 0, 0],
     [6, 0, 0, 1, 9, 5, 0, 0, 0],
@@ -44,17 +46,7 @@ for r in range(0, N, 3):
 solver = cp_model.CpSolver()
 
 status = solver.solve(model)
-
-if status == cp_model.OPTIMAL:
-    print("Optimal solution found")
-elif status == cp_model.FEASIBLE:
-    print("Feasible solution found")
-elif status == cp_model.INFEASIBLE:
-    print("No solution exists")
-elif status == cp_model.MODEL_INVALID:
-    print("Model is invalid")
-elif status == cp_model.UNKNOWN:
-    print("Unknown - solver stopped before finding a solution (e.g., timeout)")
+print(solution_status(status))
 
 for row in range(N):
     if (row % 3 == 0) and row != 0:
