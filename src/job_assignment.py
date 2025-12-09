@@ -37,9 +37,13 @@ model = cp_model.CpModel()
 # easier to read. The time bottleneck is still in the solver not in
 # the problem definition.
 
-job_is_assigned = []
-for i in range(len(jobs)):
-    job_is_assigned.append(model.new_bool_var(f"job_{i}_is_assigned"))
+largest_capacity = 0
+for i in range(len(workers)):
+    capacity = workers[i]['capacity']
+    if capacity >= largest_capacity:
+        largest_capacity = capacity
+
+max_workload = model.new_int_var(0, largest_capacity, "max_workload")
 
 assignments = {} # job : worker
 for i in range(len(jobs)):
@@ -57,17 +61,18 @@ for i in range(len(jobs)):
 # add skill matching
 for i in range(len(jobs)):
     for j in range(len(workers)):
-        model.add(jobs[i]['skill'] in workers[j]['skills']).only_enforce_if(assignments[i, j])
+        if jobs[i]['skill'] not in workers[j]['skills']:
+            model.add(assignments[i, j] == 0)
     
 # ensure no workers exceeds their capacity
 for i in range(len(workers)):
     load = 0
     for j in range(len(jobs)):
         load = load + (jobs[j]['time'] * assignments[j, i])
+    model.add(max_workload >= load)
     model.add(load <= workers[i]['capacity'])
 
-# ensure every job is assigned
-model.add(sum(job_is_assigned) == len(jobs))
+model.minimize(max_workload)
 
 solver = cp_model.CpSolver()
 solution = solver.solve(model)
@@ -75,13 +80,6 @@ solution = solver.solve(model)
 
 # -------------------- SOLUTION PRINTING -----------------------
 print(solution_status(solution))
-
-total = 0
-for i in range(len(jobs)):
-    total += solver.value(job_is_assigned[i])
-
-if total == len(jobs):
-    print("All jobs assigned")
 
 worker_time = defaultdict(int)
 for i in range(len(jobs)):
