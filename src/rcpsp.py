@@ -1,13 +1,14 @@
 # Resource-Constrained Project Scheduling Problem
 # N jobs, each with:
-#   - Duration d_j
-#   - Resource requirements (e.g., needs 2 workers, 1 machine)
-#   - Precedence constraints
+#  - Duration d_j
+#  - Resource requirements (e.g., needs 2 workers, 1 machine)
+#  - Precedence constraints
 #
 # M resource types, each with:
-#   - Capacity C_r (e.g., 3 workers available, 2 machines available)
+#  - Capacity C_r (e.g., 3 workers available, 2 machines available)
 #
-# Goal: Schedule all jobs to minimize makespan while:
+# Goal
+#  - Schedule all jobs to minimize makespan while:
 #   - Respecting precedence constraints
 #   - Ensuring total resource usage never exceeds capacity
 
